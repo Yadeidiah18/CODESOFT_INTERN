@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUXE SHOP — Premium Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/Ecommerce.css" />
+</head>
+<body>
+
+  <!-- ======= AUTH MODAL ===== -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="loginTab" onclick="switchTab('login')">Login</button>
+        <button class="auth-tab" id="registerTab" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- Login Form -->
+      <div id="loginForm">
+        <h2 class="modal-title">Welcome Back</h2>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="you@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" />
+        </div>
+        <div class="form-error" id="loginError"></div>
+        <button class="btn-full" onclick="handleLogin()">Login</button>
+      </div>
+
+      <!-- Register Form -->
+      <div id="registerForm" style="display:none">
+        <h2 class="modal-title">Create Account</h2>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="regName" placeholder="Your Name" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="regEmail" placeholder="you@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="regPassword" placeholder="Min 6 characters" />
+        </div>
+        <div class="form-error" id="registerError"></div>
+        <button class="btn-full" onclick="handleRegister()">Create Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== CART SIDEBAR ============= -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Your Cart <span id="cartCount" class="cart-badge">0</span></h3>
+      <button class="cart-close" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <!-- Cart items injected by JS -->
+      <div class="cart-empty">
+        <div class="empty-bag">🛍</div>
+        <p>Your cart is empty</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">₹0</span>
+      </div>
+      <button class="btn-full" onclick="goToCheckout()">Proceed to Checkout →</button>
+    </div>
+  </aside>
+
+  <!-- ====== CHECKOUT MODAL =========== -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-box modal-wide">
+      <button class="modal-close" onclick="closeModal('checkoutModal')">✕</button>
+      <h2 class="modal-title">Checkout</h2>
+      <div class="checkout-grid">
+
+        <!-- Left: Shipping + Payment -->
+        <div class="checkout-left">
+          <h4>Shipping Details</h4>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="shipName" placeholder="Your full name" />
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" id="shipAddress" placeholder="Street address" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" id="shipCity" placeholder="City" />
+            </div>
+            <div class="form-group">
+              <label>PIN Code</label>
+              <input type="text" id="shipPin" placeholder="500001" />
+            </div>
+          </div>
+
+          <h4 style="margin-top:1.5rem">Payment Details</h4>
+          <div class="payment-methods">
+            <label class="pay-option">
+              <input type="radio" name="payment" value="card" checked /> Credit / Debit Card
+            </label>
+            <label class="pay-option">
+              <input type="radio" name="payment" value="upi" /> UPI
+            </label>
+            <label class="pay-option">
+              <input type="radio" name="payment" value="cod" /> Cash on Delivery
+            </label>
+          </div>
+
+          <!-- Card Fields (shown when Card is selected) -->
+          <div id="cardFields">
+            <div class="form-group">
+              <label>Card Number</label>
+              <input type="text" id="cardNum" placeholder="1234 5678 9012 3456"
+                     maxlength="19" oninput="formatCard(this)" />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Expiry</label>
+                <input type="text" id="cardExp" placeholder="MM/YY" maxlength="5" />
+              </div>
+              <div class="form-group">
+                <label>CVV</label>
+                <input type="text" id="cardCvv" placeholder="•••" maxlength="3" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Order Summary -->
+        <div class="checkout-right">
+          <h4>Order Summary</h4>
+          <div id="orderSummary">
+            <!-- Injected by JS -->
+          </div>
+          <div class="order-total">
+            <span>Grand Total</span>
+            <span id="orderGrandTotal">₹0</span>
+          </div>
+          <button class="btn-full" style="margin-top:1rem" onclick="placeOrder()">
+            Place Order 🎉
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SUCCESS MODAL ========== -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal-box success-box">
+      <div class="success-icon">✓</div>
+      <h2>Order Placed!</h2>
+      <p>Your order has been placed successfully. Thank you for shopping with LUXE!</p>
+      <div class="order-id" id="orderId"></div>
+      <button class="btn-full" onclick="closeModal('successModal'); showPage('shop')">
+        Continue Shopping
+      </button>
+    </div>
+  </div>
+
+  <!-- = PRODUCT DETAIL MODAL = -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-box modal-wide">
+      <button class="modal-close" onclick="closeModal('productModal')">✕</button>
+      <div class="product-detail" id="productDetailContent">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========= NAVBAR ===== -->
+  <header class="navbar" id="navbar">
+    <div class="nav-logo" onclick="showPage('home')">LUXE</div>
+    <nav class="nav-links">
+      <a class="nav-link active" id="navHome" onclick="showPage('home')">Home</a>
+      <a class="nav-link" id="navShop" onclick="showPage('shop')">Shop</a>
+    </nav>
+    <div class="nav-actions">
+      <div id="navUser" class="nav-user">
+        <!-- Login button OR user name injected by JS -->
+      </div>
+      <button class="cart-btn" onclick="toggleCart()">
+        🛒 <span id="navCartCount" class="nav-badge">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== HOME PAGE ============ -->
+  <div id="page-home" class="page active">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-content">
+        <p class="hero-tag">New Collection 2025</p>
+        <h1 class="hero-title">Discover<br/><em>Premium</em><br/>Products</h1>
+        <p class="hero-sub">Curated collection of the finest products, delivered to your door.</p>
+        <button class="btn-hero" onclick="showPage('shop')">Shop Now →</button>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="floating-tag">⭐ Top Rated</div>
+          <div class="product-image-placeholder big">🎧</div>
+          <p>Premium Headphones</p>
+          <strong>₹12,999</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES SECTION -->
+    <section class="section">
+      <h2 class="section-title">Shop by Category</h2>
+      <div class="categories-grid">
+        <div class="cat-card" onclick="filterByCategory('Electronics')">
+          <span class="cat-icon">📱</span>
+          <span>Electronics</span>
+        </div>
+        <div class="cat-card" onclick="filterByCategory('Fashion')">
+          <span class="cat-icon">👗</span>
+          <span>Fashion</span>
+        </div>
+        <div class="cat-card" onclick="filterByCategory('Home')">
+          <span class="cat-icon">🏠</span>
+          <span>Home & Living</span>
+        </div>
+        <div class="cat-card" onclick="filterByCategory('Beauty')">
+          <span class="cat-icon">✨</span>
+          <span>Beauty</span>
+        </div>
+        <div class="cat-card" onclick="filterByCategory('Sports')">
+          <span class="cat-icon">⚽</span>
+          <span>Sports</span>
+        </div>
+        <div class="cat-card" onclick="filterByCategory('Books')">
+          <span class="cat-icon">📚</span>
+          <span>Books</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED PRODUCTS SECTION -->
+    <section class="section dark-section">
+      <h2 class="section-title light">Featured Products</h2>
+      <div class="products-grid" id="featuredGrid">
+        <!-- Injected by JS -->
+      </div>
+      <div style="text-align:center; margin-top:2rem">
+        <button class="btn-outline" onclick="showPage('shop')">View All Products →</button>
+      </div>
+    </section>
+
+    <!-- WHY LUXE SECTION -->
+    <section class="section">
+      <h2 class="section-title">Why Choose LUXE?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h4>Fast Delivery</h4>
+          <p>Get your orders in 2–4 business days across India</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h4>Secure Payments</h4>
+          <p>100% safe & encrypted transactions every time</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">↩️</div>
+          <h4>Easy Returns</h4>
+          <p>30-day hassle-free return policy on all products</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h4>24/7 Support</h4>
+          <p>We're here to help anytime you need us</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-logo">LUXE</div>
+      <p>© 2025 LUXE Shop. Built with HTML, CSS & JavaScript.</p>
+    </footer>
+
+  </div><!-- end #page-home -->
+
+  <!-- ======== SHOP PAGE =========== -->
+  <div id="page-shop" class="page">
+    <div class="shop-layout">
+
+      <!-- FILTERS SIDEBAR -->
+      <aside class="filters-panel">
+        <h3 class="filter-title">Filters</h3>
+
+        <!-- Search -->
+        <div class="filter-section">
+          <h4>Search</h4>
+          <input type="text" class="filter-input" id="searchInput"
+                 placeholder="Search products..." oninput="applyFilters()" />
+        </div>
+
+        <!-- Category -->
+        <div class="filter-section">
+          <h4>Category</h4>
+          <div class="filter-options" id="categoryFilters">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+
+        <!-- Price Range -->
+        <div class="filter-section">
+          <h4>Price Range</h4>
+          <div class="price-range">
+            <input type="range" id="priceRange" min="0" max="100000" value="100000"
+                   oninput="updatePriceLabel(); applyFilters()" />
+            <span id="priceLabel">Up to ₹1,00,000</span>
+          </div>
+        </div>
+
+        <!-- Rating -->
+        <div class="filter-section">
+          <h4>Rating</h4>
+          <div class="filter-options">
+            <label class="filter-check">
+              <input type="radio" name="rating" value="" onchange="applyFilters()" checked /> All
+            </label>
+            <label class="filter-check">
+              <input type="radio" name="rating" value="4" onchange="applyFilters()" /> ⭐ 4+ Stars
+            </label>
+            <label class="filter-check">
+              <input type="radio" name="rating" value="3" onchange="applyFilters()" /> ⭐ 3+ Stars
+            </label>
+          </div>
+        </div>
+
+        <button class="btn-clear" onclick="clearFilters()">Clear All Filters</button>
+      </aside>
+
+      <!-- PRODUCTS AREA -->
+      <div class="shop-main">
+        <div class="shop-topbar">
+          <p id="resultCount" class="result-count">Loading products...</p>
+          <select id="sortSelect" onchange="applyFilters()">
+            <option value="">Sort by: Default</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Top Rated</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="shopGrid">
+          <!-- Injected by JS -->
+        </div>
+
+        <!-- Empty state -->
+        <div class="empty-results" id="emptyResults" style="display:none">
+          <p>😕 No products found. Try adjusting your filters.</p>
+          <button class="btn-clear" onclick="clearFilters()">Reset Filters</button>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- end #page-shop -->
+
+  <!-- JS goes last -->
+  <script src="app.js"></script>
+</body>
+</html>

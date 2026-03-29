@@ -1,0 +1,95 @@
+:root {
+  --primary-teal: #26c2c9;
+  --bg-light: #e0f7f8;
+  --text-dark: #2c5d63;
+}
+
+  
+
+body {
+  background-color: var(--primary-teal);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.survey-container {
+  background-color: var(--bg-light);
+  width: 700px;
+  padding: 40px;
+  border-radius: 8px;
+  position: relative; /* Essential for floating icons */
+  overflow: hidden; /* Keeps the progress bar/decorations inside */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* The progress bar at the top */
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 8px;
+  width: 30%; /* Adjust based on progress */
+  background-color: var(--primary-teal);
+}
+
+.question-text {
+  font-size: 14px;
+  color: var(--text-dark);
+  text-align: center;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+/* Options Styling */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.option-btn {
+  width: 80%;
+  padding: 15px;
+  border: none;
+  border-radius: 30px;
+  background: white;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+  color: var(--text-dark);
+  font-weight: bold;
+}
+
+.option-btn.active {
+  background-color: var(--primary-teal);
+  color: white;
+}
+
+.label {
+  background: #f0f0f0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-right: 15px;
+  color: var(--text-dark);
+}
+
+/* Example of Absolute Positioning for Icons */
+.icon {
+  position: absolute;
+  font-size: 40px;
+  opacity: 0.8;
+}
+
+.plant { top: 20%; left: 5%; }
+.bike { bottom: 10%; right: 5%; }
+.banana { top: 30%; right: 5%; }
