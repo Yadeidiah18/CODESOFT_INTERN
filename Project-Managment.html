@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Project Management Tool</title>
+    <link rel="stylesheet" href="styles/Project-Managment.css">
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <h1>Project Management Tool</h1>
+        <p>Simple task tracker using HTML, CSS and JavaScript</p>
+      </header>
+
+      <section class="task-form-section">
+        <h2>Add New Task</h2>
+
+        <div class="task-form">
+          <input type="text" id="projectName" placeholder="Enter project name">
+          <input type="text" id="taskName" placeholder="Enter task name">
+          <input type="date" id="deadline">
+
+          <select id="priority">
+            <option value="">Select Priority</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+
+          <select id="status">
+            <option value="">Select Status</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+
+          <button onclick="addTask()">Add Task</button>
+        </div>
+      </section>
+
+      <section class="task-list-section">
+        <div class="task-list-header">
+          <h2>Task List</h2>
+          <button class="clear-btn" onclick="clearAllTasks()">Clear All</button>
+        </div>
+
+        <div id="taskContainer" class="task-container"></div>
+      </section>
+    </div>
+
+    <script src="Project.js"></script>
+  </body>
+</html>
