@@ -1,6 +1,5 @@
-// ========================================
+
 // PRODUCT DATA
-// ========================================
 const PRODUCTS = [
   // --- Electronics ---
   {
@@ -255,26 +254,26 @@ const PRODUCTS = [
   },
 ];
 
-// ========================================
+
 // STATE — all app data lives here
-// ========================================
+
 let cart        = JSON.parse(localStorage.getItem('luxe_cart'))         || [];
 let users       = JSON.parse(localStorage.getItem('luxe_users'))        || [];
 let currentUser = JSON.parse(localStorage.getItem('luxe_current_user')) || null;
 let activeCategory = '';   // currently selected category filter
 let currentPage    = 'home';
 
-// ========================================
+
 // INIT — runs when page first loads
-// ========================================
+
 document.addEventListener('DOMContentLoaded', () => {
 
   renderFeatured();         // home page: featured product cards
   renderCategoryFilters();  // shop page: category chip buttons
   renderShop();             // shop page: product grid
-  updateNavUser();          // navbar: login button or username
+  updateNavUser();          
   updateCartBadge();        // navbar + cart: item count badges
-  updatePriceLabel();       // shop filter: price range label
+  updatePriceLabel();       
 
   // Shrink navbar on scroll
   window.addEventListener('scroll', () => {
@@ -299,9 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-// ========================================
 // PAGE NAVIGATION
-// ========================================
 
 /**
  * showPage('home') or showPage('shop')
@@ -327,9 +324,8 @@ function showPage(page) {
   if (page === 'shop') renderShop();
 }
 
-// ========================================
+
 // HOME PAGE — FEATURED PRODUCTS
-// ========================================
 
 /**
  * Pick up to 4 products that have a badge
@@ -341,9 +337,7 @@ function renderFeatured() {
     featured.map(p => productCardHTML(p)).join('');
 }
 
-// ========================================
 // CATEGORY FILTER (from home page tiles)
-// ========================================
 
 /**
  * Called when a user clicks a category tile on the Home page.
@@ -360,9 +354,8 @@ function filterByCategory(cat) {
   }, 50);
 }
 
-// ========================================
+
 // SHOP PAGE — FILTERS & SORTING
-// ========================================
 
 /**
  * Build the category chip buttons inside the filter panel.
@@ -490,9 +483,8 @@ function clearFilters() {
   applyFilters();
 }
 
-// ========================================
+
 // PRODUCT CARD HTML BUILDER
-// ========================================
 
 /**
  * Returns the HTML string for one product card.
@@ -536,9 +528,9 @@ function productCardHTML(p) {
   `;
 }
 
-// ========================================
+
 // PRODUCT DETAIL MODAL
-// ========================================
+
 
 /**
  * Find the product by id, build the detail view HTML,
@@ -583,9 +575,7 @@ function openProductDetail(id) {
   openModal('productModal');
 }
 
-// ========================================
 // CART — ADD / REMOVE / QUANTITY
-// ========================================
 
 /**
  * Add a product to the cart.
@@ -653,9 +643,8 @@ function updateCartBadge() {
   document.getElementById('navCartCount').textContent = totalQty;
 }
 
-// ========================================
+
 // CART SIDEBAR — OPEN / CLOSE / RENDER
-// ========================================
 
 /**
  * Slide the cart sidebar in or out, and toggle its dark overlay.
@@ -724,9 +713,9 @@ function renderCartItems() {
   footerEl.style.display = 'block';
 }
 
-// ========================================
+
 // CHECKOUT
-// ========================================
+
 
 /**
  * Called when "Proceed to Checkout" is clicked.
@@ -771,7 +760,7 @@ function renderOrderSummary() {
  */
 function placeOrder() {
 
-  // --- Validate shipping fields ---
+  //  Validate shipping fields 
   const name    = document.getElementById('shipName').value.trim();
   const address = document.getElementById('shipAddress').value.trim();
   const city    = document.getElementById('shipCity').value.trim();
@@ -782,7 +771,7 @@ function placeOrder() {
     return;
   }
 
-  // --- Validate card fields (only if card payment selected) ---
+  //  Validate card fields (only if card payment selected) 
   const payment = document.querySelector('input[name="payment"]:checked').value;
   if (payment === 'card') {
     const cardNum = document.getElementById('cardNum').value.trim();
@@ -795,7 +784,7 @@ function placeOrder() {
     }
   }
 
-  // --- Success: generate order ID, clear cart, show success modal ---
+  //  Success: generate order ID, clear cart, show success modal
   const orderId = 'LUXE-' + Date.now().toString().slice(-8);
   document.getElementById('orderId').textContent = `Order ID: ${orderId}`;
 
@@ -815,9 +804,9 @@ function formatCard(input) {
   input.value = val.replace(/(.{4})/g, '$1 ').trim();        // add spaces every 4
 }
 
-// ========================================
+
 // USER AUTHENTICATION
-// ========================================
+
 
 /**
  * Log in with email + password.
@@ -935,9 +924,9 @@ function switchTab(tab) {
   document.getElementById('registerError').textContent = '';
 }
 
-// ========================================
+
 // MODAL HELPERS
-// ========================================
+
 
 /** Open a modal by adding the .open class */
 function openModal(id) {
@@ -949,9 +938,9 @@ function closeModal(id) {
   document.getElementById(id).classList.remove('open');
 }
 
-// ========================================
+
 // TOAST NOTIFICATION
-// ========================================
+
 
 /**
  * Show a small popup notification at the bottom of the screen.
